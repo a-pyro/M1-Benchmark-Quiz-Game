@@ -203,8 +203,6 @@ window.onload = function () {
     } else {
       //risp booleana
       switchUiCard(multipleChoiceSection, booleanSection);
-      const true_answ = document.querySelector('.true');
-      const false_answ = document.querySelector('.false');
     }
   }
 
@@ -218,17 +216,22 @@ window.onload = function () {
       console.log('userAnswerText:', userAnswerText);
       //pusho dentro
       userAnswers.push(userAnswerText);
-      checkAnswer();
+      checkAnswer(userAnswerText);
     } else {
       alert('provide an answer!');
     }
   }
 
-  function checkAnswer() {
-    if (userAnswers[questionNumber] === correctAnswersMemory[questionNumber]) {
-      alert('congrats!  ');
+  function checkAnswer(userAnswer) {
+    if (userAnswer === correctAnswersMemory[questionNumber]) {
+      console.log('user ans:', userAnswer);
+      console.log('correct:', correctAnswersMemory[questionNumber]);
+      alert('congrats!');
     } else {
-      alert('try again!  ');
+      console.log('user ans:', userAnswer);
+      console.log('correct:', correctAnswersMemory[questionNumber]);
+
+      alert('try again!');
     }
   }
 
