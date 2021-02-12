@@ -1,0 +1,38 @@
+html {
+  scroll-behavior: smooth;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: 'Work Sans', sans-serif;
+  background-color: #333;
+  min-height: 100vh;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container {
+  transform: translateY(-200px);
+}
+#startCard,
+#userCard {
+  background-color: #cfd8dc;
+  padding: 1rem;
+  width: 768px;
+  height: 350px;
+}
+.user-choices {
+  display: flex;
+  flex-direction: column;
+}
+
+/* user card */
+
+/* helpers */
+.d-none {
+  display: none;
+}
