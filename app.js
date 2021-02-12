@@ -100,6 +100,7 @@ window.onload = function () {
   const questionsMemory = [];
   const correctAnswersMemory = [];
   const questionNumber = 0;
+  const userAnswers = [];
 
   //fetching questions
 
@@ -111,7 +112,7 @@ window.onload = function () {
 
   //listeners
   startBtn.addEventListener('click', getUserPreferences);
-  confirmBtn.addEventListener('click', checkAnswer);
+  confirmBtn.addEventListener('click', getAnswer);
   nextQuestionBtn.addEventListener('click', showNextAnswer);
 
   function getUserPreferences() {
@@ -207,7 +208,29 @@ window.onload = function () {
     }
   }
 
-  function checkAnswer() {}
+  function getAnswer() {
+    //prender le risposte
+    const answers = document.querySelectorAll('.answer-controller input');
+    const userInput = [...answers].find((radioBtn) => radioBtn.checked);
+    if (userInput) {
+      const userAnswerText = document.querySelector(`#${userInput.id} + label`)
+        .innerText;
+      console.log('userAnswerText:', userAnswerText);
+      //pusho dentro
+      userAnswers.push(userAnswerText);
+      checkAnswer();
+    } else {
+      alert('provide an answer!');
+    }
+  }
+
+  function checkAnswer() {
+    if (userAnswers[questionNumber] === correctAnswersMemory[questionNumber]) {
+      alert('congrats!  ');
+    } else {
+      alert('try again!  ');
+    }
+  }
 
   function showNextAnswer() {}
 };
