@@ -166,6 +166,8 @@ window.onload = function () {
   }
 
   function renderQuestion(qNum) {
+    //prima devo levare il disabled sui radio
+    enableRadio();
     //estraggo dalla memoria la domanda che mi serve, in base all'indice
     const question = questionsMemory.find((_, idx) => idx === qNum);
 
@@ -223,6 +225,9 @@ window.onload = function () {
       //controllo se ha risposto correttamente
       checkAnswer(userAnswerText);
 
+      //incremento il contatore delle domande
+      updateQuestionNumber();
+
       //disabilito comandi
       disableRadioAfterSubmit();
 
@@ -230,9 +235,6 @@ window.onload = function () {
       document.querySelector('.user-points').innerText = `${
         pointsMemory || ''
       }`;
-
-      //incremento il contatore delle domande
-      nextQuestion();
     } else {
       alert('provide an answer!');
     }
@@ -255,8 +257,9 @@ window.onload = function () {
     }
   }
 
-  function nextQuestion() {
+  function updateQuestionNumber() {
     questionNumber++;
+    console.log('questionNumber updated: new qNum:', questionNumber);
   }
 
   function updatePoints() {
@@ -264,7 +267,7 @@ window.onload = function () {
   }
 
   function userHasAnswered() {
-    return userAnswers.length > questionNumber;
+    return userAnswers.length === questionNumber;
   }
 
   function disableRadioAfterSubmit() {
@@ -275,8 +278,37 @@ window.onload = function () {
       confirmBtn.setAttribute('disabled', true);
     }
   }
+  function gameIsOver() {
+    return userAnswers.length === correctAnswersMemory.length;
+  }
 
-  function showNextAnswer() {}
+  function showNextAnswer() {
+    if (gameIsOver()) {
+      showFinalResult();
+      return;
+    }
+    console.log('userAnswers.length:', userAnswers.length);
+    console.log('questionNumber:', questionNumber);
+
+    if (userAnswers.length < questionNumber) {
+      alert('must answer before!');
+      return;
+    }
+
+    renderQuestion(questionNumber);
+  }
+
+  function enableRadio() {
+    const radios = document.querySelectorAll('input[type="radio"]');
+    radios.forEach((radio) => {
+      radio.disabled = false;
+      radio.checked = false;
+    });
+    confirmBtn.disabled = false;
+  }
+  function showFinalResult() {
+    console.log('finito, ora facciamo altro');
+  }
 };
 
 //IF YOU ARE DISPLAYING ALL THE QUESTIONS TOGETHER:
