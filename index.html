@@ -54,21 +54,25 @@
         <!-- testo della domanda -->
         <section class="question">
           <h3 class="question-number"></h3>
-          <span class="question-category"></span>
-          <p class="question-body"></p>
+
+          <p class="question-body">
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore
+            aut molestiae alias quo ipsam placeat? Voluptates vitae quis modi
+            perspiciatis.
+          </p>
         </section>
         <!-- controller per la risposta -->
         <section class="answer-controller">
           <!-- vero/falso -->
-          <div class="boolean">
-            <input type="radio" name="boolean" value="true" />
-            <label for="true" class="true">True</label>
-            <input type="radio" name="boolean" value="false" />
-            <label for="false" class="false">False</label>
+          <div class="boolean hide">
+            <input type="radio" name="boolean" class="true" value="true" />
+            <label for="true" class="true-label">True</label>
+            <input type="radio" name="boolean" class="false" value="false" />
+            <label for="false" class="false-label">False</label>
           </div>
 
           <!-- multipla -->
-          <div class="multiple-choice">
+          <div class="multiple-choice hide">
             <!-- a -->
             <input
               type="radio"
@@ -76,7 +80,11 @@
               name="multiple-choice"
               value="a"
             />
-            <label for="a" id="firstChoiceText"></label>
+            <label
+              for="a"
+              class="label-multiple-choice"
+              id="firstChoiceText"
+            ></label>
             <!-- b -->
             <input
               type="radio"
@@ -84,7 +92,11 @@
               name="multiple-choice"
               value="b"
             />
-            <label for="b" id="secondChoiceText"></label>
+            <label
+              for="b"
+              class="label-multiple-choice"
+              id="secondChoiceText"
+            ></label>
             <!-- c -->
             <input
               type="radio"
@@ -92,7 +104,11 @@
               name="multiple-choice"
               value="c"
             />
-            <label for="c" id="thirdChoiceText"></label>
+            <label
+              for="c"
+              class="label-multiple-choice"
+              id="thirdChoiceText"
+            ></label>
             <!-- d -->
             <input
               type="radio"
@@ -100,11 +116,18 @@
               name="multiple-choice"
               value="d"
             />
-            <label for="d" id="fourthChoiceText"></label>
+            <label
+              for="d"
+              class="label-multiple-choice"
+              id="fourthChoiceText"
+            ></label>
           </div>
         </section>
         <!-- controller per il quiz -->
-        <section class="quiz-controller"></section>
+        <section class="quiz-controller">
+          <button id="confirmBtn">Submit</button>
+          <button id="nextQuestionBtn">Next</button>
+        </section>
       </section>
     </div>
     <!-- Option 1: Bootstrap Bundle with Popper -->

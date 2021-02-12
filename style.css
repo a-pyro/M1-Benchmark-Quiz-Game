@@ -32,6 +32,13 @@ body {
 
 /* user card */
 
+/* answers */
+
+.multiple-choice {
+  display: flex;
+  flex-direction: column;
+}
+
 /* helpers */
 .hide {
   display: none;

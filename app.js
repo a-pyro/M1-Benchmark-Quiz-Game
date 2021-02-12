@@ -99,15 +99,20 @@ window.onload = function () {
   //memory
   const questionsMemory = [];
   const correctAnswersMemory = [];
+  const questionNumber = 0;
 
   //fetching questions
 
   //referenze
 
   const startBtn = document.getElementById('startBtn');
+  const confirmBtn = document.getElementById('confirmBtn');
+  const nextQuestionBtn = document.getElementById('nextQuestionBtn');
 
   //listeners
   startBtn.addEventListener('click', getUserPreferences);
+  confirmBtn.addEventListener('click', checkAnswer);
+  nextQuestionBtn.addEventListener('click', showNextAnswer);
 
   function getUserPreferences() {
     const quantity = parseInt(document.getElementById('quantity').value);
@@ -124,9 +129,12 @@ window.onload = function () {
         document.getElementById('startCard'),
         document.getElementById('userCard')
       );
+      renderQuestion(questionNumber);
     });
 
-    console.log(correctAnswersMemory, questionsMemory);
+    console.log(`correctAnswersMemory:`, correctAnswersMemory);
+    console.log(`questionsMemory:`, questionsMemory);
+
     // console.log(questionsMemory);
     // console.log(quantity, difficulty);
   }
@@ -150,10 +158,58 @@ window.onload = function () {
     answers.forEach((correctAnsw) => answersMemory.push(correctAnsw));
   }
 
-  function switchUiCard(startCard, userCard) {
-    startCard.classList.add('hide');
-    userCard.classList.remove('hide');
+  function switchUiCard(cardToHide, cardToShow) {
+    cardToHide.classList.add('hide');
+    cardToShow.classList.remove('hide');
   }
+
+  function renderQuestion(qNum) {
+    //estraggo dalla memoria la domanda che mi serve, in base all'indice
+    const question = questionsMemory.find((_, idx) => idx === qNum);
+
+    //referenze alla domanda nel DOM
+    const question_number = document.querySelector('.question-number');
+    const question_body = document.querySelector('.question-body');
+
+    //referenze risposta in base a tipo di domanda
+    const multipleChoiceSection = document.querySelector('.multiple-choice');
+    const booleanSection = document.querySelector('.boolean');
+
+    //estraggo le parrti che mi servono
+    const {
+      correct_answer: correctAnswer,
+      incorrect_answers: incorrectAnswer,
+      question: questionText,
+    } = question; //stringa , array, stringa
+
+    //mischio le risposte
+    const shuffledAnsw = [...incorrectAnswer, correctAnswer].sort(
+      (a, b) => 0.5 - Math.random()
+    ); //!si puo' implementare un random migliore ma per ora bene così
+
+    //setto il render dellele parti comuni
+    question_number.innerText = `Question number ${qNum + 1}`;
+    question_body.innerText = questionText;
+
+    //setto il render delle parti specifiche in base alla tipologia di domanda
+    if (question.type === 'multiple') {
+      //rispmultipla
+      switchUiCard(booleanSection, multipleChoiceSection);
+      const labelsUI = multipleChoiceSection.querySelectorAll('label');
+      labelsUI.forEach(
+        (label, idx) => (label.innerText = `${shuffledAnsw[idx]}`)
+      );
+    } else {
+      //risp booleana
+      switchUiCard(multipleChoiceSection, booleanSection);
+      const true_answ = document.querySelector('.true');
+      const false_answ = document.querySelector('.false');
+    }
+  }
+
+  function checkAnswer() {}
+
+  function showNextAnswer() {}
 };
 
 //IF YOU ARE DISPLAYING ALL THE QUESTIONS TOGETHER:
