@@ -30,7 +30,7 @@
     />
     <link rel="stylesheet" href="style.css" />
 
-    <title>Hello, world!</title>
+    <title>Quiz Game Benchmark!</title>
   </head>
   <body class="animate__animated animate__fadeIn">
     <div class="container">
@@ -42,7 +42,7 @@
           <label for="cars">Choose a car:</label>
 
           <select name="difficulty" id="difficulty">
-            <option value="volvo">Easy</option>
+            <option value="easy" selected>Easy</option>
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
           </select>
@@ -50,7 +50,25 @@
         </div>
       </section>
       <!-- usercard -->
-      <section id="userCard" class="d-none"></section>
+      <section id="userCard" class="hide">
+        <!-- testo della domanda -->
+        <section class="question">
+          <h3 class="question-number"></h3>
+          <span class="question-category"></span>
+          <p class="question-body"></p>
+        </section>
+        <!-- controller per la risposta -->
+        <section class="answer-controller">
+          <input type="radio" id="male" name="gender" value="male" />
+          <label for="male">Male</label><br />
+          <input type="radio" id="female" name="gender" value="female" />
+          <label for="female">Female</label><br />
+          <input type="radio" id="other" name="gender" value="other" />
+          <label for="other">Other</label>
+        </section>
+        <!-- controller per il quiz -->
+        <section class="quiz-controller"></section>
+      </section>
     </div>
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <!-- <script

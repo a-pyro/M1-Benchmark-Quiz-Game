@@ -33,6 +33,6 @@ body {
 /* user card */
 
 /* helpers */
-.d-none {
+.hide {
   display: none;
 }

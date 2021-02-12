@@ -96,7 +96,64 @@ const questions = [
 ];
 
 window.onload = function () {
+  //memory
+  const questionsMemory = [];
+  const correctAnswersMemory = [];
+
+  //fetching questions
+
   //referenze
+
+  const startBtn = document.getElementById('startBtn');
+
+  //listeners
+  startBtn.addEventListener('click', getUserPreferences);
+
+  function getUserPreferences() {
+    const quantity = parseInt(document.getElementById('quantity').value);
+    const difficulty = document.getElementById('difficulty').value;
+    if (isNaN(quantity)) {
+      alert('please select a number');
+      return; //! mettere qualcosa tipo focus sull'input
+    }
+    getQuestions(quantity, difficulty).then((data) => {
+      const { results: questions } = data;
+      pushQuestions(questions, questionsMemory);
+      pushCorrectAnswers(questions, correctAnswersMemory);
+      switchUiCard(
+        document.getElementById('startCard'),
+        document.getElementById('userCard')
+      );
+    });
+
+    console.log(correctAnswersMemory, questionsMemory);
+    // console.log(questionsMemory);
+    // console.log(quantity, difficulty);
+  }
+
+  async function getQuestions(quantity, difficulty) {
+    const endpoint = `https://opentdb.com/api.php?amount=${quantity}&category=18&difficulty=${difficulty}`;
+    const response = await fetch(endpoint);
+    const data = await response.json();
+    return data;
+  }
+
+  function pushQuestions(fetchedQuestions, localQuestions) {
+    fetchedQuestions.forEach((question) => localQuestions.push(question));
+  }
+
+  function pushCorrectAnswers(questions, answersMemory) {
+    const answers = questions.map((question) => {
+      const { correct_answer: correctAnswer } = question;
+      return correctAnswer;
+    });
+    answers.forEach((correctAnsw) => answersMemory.push(correctAnsw));
+  }
+
+  function switchUiCard(startCard, userCard) {
+    startCard.classList.add('hide');
+    userCard.classList.remove('hide');
+  }
 };
 
 //IF YOU ARE DISPLAYING ALL THE QUESTIONS TOGETHER:
