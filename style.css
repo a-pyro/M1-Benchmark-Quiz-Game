@@ -31,6 +31,10 @@ body {
 }
 
 /* user card */
+.question-header {
+  display: flex;
+  justify-content: space-between;
+}
 
 /* answers */
 

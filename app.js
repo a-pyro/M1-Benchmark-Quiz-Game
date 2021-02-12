@@ -99,8 +99,9 @@ window.onload = function () {
   //memory
   const questionsMemory = [];
   const correctAnswersMemory = [];
-  const questionNumber = 0;
+  let questionNumber = 0;
   const userAnswers = [];
+  let pointsMemory = 0;
 
   //fetching questions
 
@@ -171,6 +172,7 @@ window.onload = function () {
     //referenze alla domanda nel DOM
     const question_number = document.querySelector('.question-number');
     const question_body = document.querySelector('.question-body');
+    const user_points = document.querySelector('.user-points');
 
     //referenze risposta in base a tipo di domanda
     const multipleChoiceSection = document.querySelector('.multiple-choice');
@@ -191,6 +193,7 @@ window.onload = function () {
     //setto il render dellele parti comuni
     question_number.innerText = `Question number ${qNum + 1}`;
     question_body.innerText = questionText;
+    user_points.innerText = `${pointsMemory || ''}`;
 
     //setto il render delle parti specifiche in base alla tipologia di domanda
     if (question.type === 'multiple') {
@@ -216,22 +219,60 @@ window.onload = function () {
       console.log('userAnswerText:', userAnswerText);
       //pusho dentro
       userAnswers.push(userAnswerText);
+
+      //controllo se ha risposto correttamente
       checkAnswer(userAnswerText);
+
+      //disabilito comandi
+      disableRadioAfterSubmit();
+
+      //update punteggio UI dopo risposta
+      document.querySelector('.user-points').innerText = `${
+        pointsMemory || ''
+      }`;
+
+      //incremento il contatore delle domande
+      nextQuestion();
     } else {
       alert('provide an answer!');
     }
   }
 
   function checkAnswer(userAnswer) {
-    if (userAnswer === correctAnswersMemory[questionNumber]) {
+    const correctAnswer = correctAnswersMemory[questionNumber];
+    if (userAnswer === correctAnswer) {
       console.log('user ans:', userAnswer);
-      console.log('correct:', correctAnswersMemory[questionNumber]);
+      console.log('correct:', correctAnswer);
+
+      //se la risposta è corretta aggiurno i punti
+      updatePoints();
       alert('congrats!');
     } else {
       console.log('user ans:', userAnswer);
-      console.log('correct:', correctAnswersMemory[questionNumber]);
+      console.log('correct:', correctAnswer);
 
-      alert('try again!');
+      alert(`wrong! the correct answer was: ${correctAnswer}`);
+    }
+  }
+
+  function nextQuestion() {
+    questionNumber++;
+  }
+
+  function updatePoints() {
+    pointsMemory++;
+  }
+
+  function userHasAnswered() {
+    return userAnswers.length > questionNumber;
+  }
+
+  function disableRadioAfterSubmit() {
+    //se user answers > questionNumber vuol dire che ha già risposto, quindi disabilito
+    if (userHasAnswered()) {
+      const radios = document.querySelectorAll('input[type="radio"]');
+      radios.forEach((radio) => radio.setAttribute('disabled', true));
+      confirmBtn.setAttribute('disabled', true);
     }
   }
 
