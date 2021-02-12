@@ -59,12 +59,49 @@
         </section>
         <!-- controller per la risposta -->
         <section class="answer-controller">
-          <input type="radio" id="male" name="gender" value="male" />
-          <label for="male">Male</label><br />
-          <input type="radio" id="female" name="gender" value="female" />
-          <label for="female">Female</label><br />
-          <input type="radio" id="other" name="gender" value="other" />
-          <label for="other">Other</label>
+          <!-- vero/falso -->
+          <div class="boolean">
+            <input type="radio" name="boolean" value="true" />
+            <label for="true" class="true">True</label>
+            <input type="radio" name="boolean" value="false" />
+            <label for="false" class="false">False</label>
+          </div>
+
+          <!-- multipla -->
+          <div class="multiple-choice">
+            <!-- a -->
+            <input
+              type="radio"
+              id="firstChoice"
+              name="multiple-choice"
+              value="a"
+            />
+            <label for="a" id="firstChoiceText"></label>
+            <!-- b -->
+            <input
+              type="radio"
+              id="secondChoice"
+              name="multiple-choice"
+              value="b"
+            />
+            <label for="b" id="secondChoiceText"></label>
+            <!-- c -->
+            <input
+              type="radio"
+              id="thirdChoice"
+              name="multiple-choice"
+              value="c"
+            />
+            <label for="c" id="thirdChoiceText"></label>
+            <!-- d -->
+            <input
+              type="radio"
+              id="fourthChoice"
+              name="multiple-choice"
+              value="d"
+            />
+            <label for="d" id="fourthChoiceText"></label>
+          </div>
         </section>
         <!-- controller per il quiz -->
         <section class="quiz-controller"></section>
