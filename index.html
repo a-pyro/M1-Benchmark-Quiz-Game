@@ -34,14 +34,23 @@
   </head>
   <body class="animate__animated animate__fadeIn">
     <div class="container">
-      <section id="startCard">
+      <section id="startCard" class="card">
         <h1>Welcome to Quiz Game!</h1>
         <div class="user-choices">
-          <label for="quantity">How Many Questions?</label>
-          <input type="number" id="quantity" name="quantity" max="30" />
-          <label for="cars">Choose a car:</label>
+          <label for="quantity" class="mb"
+            >How Many Questions would you like?</label
+          >
+          <input
+            type="number"
+            id="quantity"
+            name="quantity"
+            max="30"
+            class="mb"
+            placeholder="n"
+          />
+          <label for="difficulty" class="mb">Choose difficulty level</label>
 
-          <select name="difficulty" id="difficulty">
+          <select name="difficulty" id="difficulty" class="mb">
             <option value="easy" selected>Easy</option>
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
@@ -50,7 +59,7 @@
         </div>
       </section>
       <!-- usercard -->
-      <section id="userCard" class="hide">
+      <section id="userCard" class="hide card">
         <!-- testo della domanda -->
         <section class="question">
           <div class="question-header">
@@ -69,74 +78,38 @@
         <section class="answer-controller">
           <!-- vero/falso -->
           <div class="boolean hide">
-            <input
-              type="radio"
-              name="boolean"
-              id="true"
-              class="true"
-              value="true"
-            />
-            <label for="true" class="true-label">True</label>
-            <input
-              type="radio"
-              name="boolean"
-              id="false"
-              class="false"
-              value="false"
-            />
-            <label for="false" class="false-label">False</label>
+            <div>
+              <input type="radio" name="boolean" id="true" value="true" />
+              <label for="true" class="true-label">True</label>
+            </div>
+            <div>
+              <input type="radio" name="boolean" value="false" />
+              <label for="false" class="false-label">False</label>
+            </div>
           </div>
 
           <!-- multipla -->
           <div class="multiple-choice hide">
             <!-- a -->
-            <input
-              type="radio"
-              id="firstChoice"
-              name="multiple-choice"
-              value="a"
-            />
-            <label
-              for="a"
-              class="label-multiple-choice"
-              id="firstChoiceText"
-            ></label>
+            <div>
+              <input type="radio" name="multiple-choice" value="a" />
+              <label for="a" class="label-multiple-choice"></label>
+            </div>
             <!-- b -->
-            <input
-              type="radio"
-              id="secondChoice"
-              name="multiple-choice"
-              value="b"
-            />
-            <label
-              for="b"
-              class="label-multiple-choice"
-              id="secondChoiceText"
-            ></label>
+            <div>
+              <input type="radio" name="multiple-choice" value="b" />
+              <label for="b" class="label-multiple-choice"></label>
+            </div>
             <!-- c -->
-            <input
-              type="radio"
-              id="thirdChoice"
-              name="multiple-choice"
-              value="c"
-            />
-            <label
-              for="c"
-              class="label-multiple-choice"
-              id="thirdChoiceText"
-            ></label>
+            <div>
+              <input type="radio" name="multiple-choice" value="c" />
+              <label for="c" class="label-multiple-choice"></label>
+            </div>
             <!-- d -->
-            <input
-              type="radio"
-              id="fourthChoice"
-              name="multiple-choice"
-              value="d"
-            />
-            <label
-              for="d"
-              class="label-multiple-choice"
-              id="fourthChoiceText"
-            ></label>
+            <div>
+              <input type="radio" name="multiple-choice" value="d" />
+              <label for="d" class="label-multiple-choice"></label>
+            </div>
           </div>
         </section>
         <!-- controller per il quiz -->

@@ -23,6 +23,7 @@ window.onload = function () {
   const question_number = document.querySelector('.question-number');
   const question_body = document.querySelector('.question-body');
   const user_points = document.querySelector('.user-points');
+  const labelsUI = multipleChoiceSection.querySelectorAll('label');
 
   //listeners
   startBtn.addEventListener('click', getUserPreferences);
@@ -42,10 +43,6 @@ window.onload = function () {
       return;
     }
     getQuestions(quantity, difficulty)
-      .then((data) => {
-        showWaitingSpinner();
-        return data;
-      })
       .then((data) => {
         const { results: questions } = data;
         pushQuestions(questions, questionsMemory);
@@ -73,10 +70,6 @@ window.onload = function () {
     const response = await fetch(endpoint);
     const data = await response.json();
     return data;
-  }
-
-  function showWaitingSpinner() {
-    console.log('loading 👴🏻');
   }
 
   function pushQuestions(fetchedQuestions, localQuestions) {
@@ -123,7 +116,6 @@ window.onload = function () {
     if (question.type === 'multiple') {
       //rispmultipla
       switchUiCard(booleanSection, multipleChoiceSection);
-      const labelsUI = multipleChoiceSection.querySelectorAll('label');
       labelsUI.forEach(
         (label, idx) => (label.innerText = `${shuffledAnsw[idx]}`)
       );
@@ -136,10 +128,11 @@ window.onload = function () {
   function getAnswer() {
     //prender le risposte
     const answers = document.querySelectorAll('.answer-controller input');
-    const userInput = [...answers].find((radioBtn) => radioBtn.checked);
-    if (userInput) {
-      const userAnswerText = document.querySelector(`#${userInput.id} + label`)
-        .innerText;
+    const radioChecked = [...answers].find((radioBtn) => radioBtn.checked);
+    if (radioChecked) {
+      const userAnswerText = document.querySelector(
+        `input[value="${radioChecked.value}"] + label`
+      ).innerText;
       console.log('userAnswerText:', userAnswerText);
       //pusho dentro
       userAnswers.push(userAnswerText);
