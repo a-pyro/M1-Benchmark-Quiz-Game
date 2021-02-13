@@ -7,12 +7,20 @@ window.onload = function () {
   let questionNumber = 0;
   const userAnswers = [];
   let pointsMemory = 0;
+  let hasAnswered = false;
+  const MAX_QUESTIONS = 30;
+  const POINT_VALUE = 100;
+  let totalQuestionNumber = 0;
 
   //referenze
 
   const startBtn = document.getElementById('startBtn');
   const confirmBtn = document.getElementById('confirmBtn');
   const nextQuestionBtn = document.getElementById('nextQuestionBtn');
+  const multipleChoiceSection = document.querySelector('.multiple-choice');
+  const booleanSection = document.querySelector('.boolean');
+
+  const radios = document.querySelectorAll('input[type="radio"]');
 
   //listeners
   startBtn.addEventListener('click', getUserPreferences);
@@ -26,19 +34,32 @@ window.onload = function () {
       alert('please select a number');
       return; //! mettere qualcosa tipo focus sull'input
     }
-    getQuestions(quantity, difficulty).then((data) => {
-      const { results: questions } = data;
-      pushQuestions(questions, questionsMemory);
-      pushCorrectAnswers(questions, correctAnswersMemory);
-      switchUiCard(
-        document.getElementById('startCard'),
-        document.getElementById('userCard')
-      );
-      renderQuestion(questionNumber);
-    });
 
-    console.log(`correctAnswersMemory:`, correctAnswersMemory);
-    console.log(`questionsMemory:`, questionsMemory);
+    if (quantity > MAX_QUESTIONS || quantity <= 0) {
+      alert(`Select a value between 1 and ${MAX_QUESTIONS} you nerd 🤓`);
+      return;
+    }
+    getQuestions(quantity, difficulty)
+      .then((data) => {
+        showWaitingSpinner();
+        return data;
+      })
+      .then((data) => {
+        const { results: questions } = data;
+        pushQuestions(questions, questionsMemory);
+        pushCorrectAnswers(questions, correctAnswersMemory);
+        totalQuestionNumber = questions.length;
+        totalQuestionNumber = quantity;
+        switchUiCard(
+          document.getElementById('startCard'),
+          document.getElementById('userCard')
+        );
+      })
+      .then(() => renderQuestion(questionNumber))
+      .then(() => {
+        console.log(`correctAnswersMemory:\n`, correctAnswersMemory.join('\n'));
+        console.table(questionsMemory);
+      });
 
     // console.log(questionsMemory);
     // console.log(quantity, difficulty);
@@ -50,6 +71,10 @@ window.onload = function () {
     const response = await fetch(endpoint);
     const data = await response.json();
     return data;
+  }
+
+  function showWaitingSpinner() {
+    console.log('loading 👴🏻');
   }
 
   function pushQuestions(fetchedQuestions, localQuestions) {
@@ -79,10 +104,6 @@ window.onload = function () {
     const question_number = document.querySelector('.question-number');
     const question_body = document.querySelector('.question-body');
     const user_points = document.querySelector('.user-points');
-
-    //referenze risposta in base a tipo di domanda
-    const multipleChoiceSection = document.querySelector('.multiple-choice');
-    const booleanSection = document.querySelector('.boolean');
 
     //estraggo le parrti che mi servono
     const {
@@ -129,11 +150,15 @@ window.onload = function () {
       //controllo se ha risposto correttamente
       checkAnswer(userAnswerText);
 
-      //incremento il contatore delle domande
-      updateQuestionNumber();
+      //dico che ha risposto alla prima domanda
+      // userHasAnswered(true);
+      hasAnswered = true;
 
       //disabilito comandi
       disableRadioAfterSubmit();
+
+      //incremento il contatore delle domande
+      updateQuestionNumber();
 
       //update punteggio UI dopo risposta
       document.querySelector('.user-points').innerText = `${
@@ -167,17 +192,11 @@ window.onload = function () {
   }
 
   function updatePoints() {
-    pointsMemory++;
-  }
-
-  function userHasAnswered() {
-    return userAnswers.length === questionNumber;
+    pointsMemory += POINT_VALUE;
   }
 
   function disableRadioAfterSubmit() {
-    //se user answers > questionNumber vuol dire che ha già risposto, quindi disabilito
-    if (userHasAnswered()) {
-      const radios = document.querySelectorAll('input[type="radio"]');
+    if (hasAnswered) {
       radios.forEach((radio) => radio.setAttribute('disabled', true));
       confirmBtn.setAttribute('disabled', true);
     }
@@ -191,20 +210,21 @@ window.onload = function () {
       showFinalResult();
       return;
     }
-    console.log('userAnswers.length:', userAnswers.length);
-    console.log('questionNumber:', questionNumber);
 
-    const answers = document.querySelectorAll('.answer-controller input');
-    const userInput = [...answers].find((radioBtn) => radioBtn.checked);
-    if (!userInput) {
-      alert('devi prima rispondereeeeee 💩');
-      return;
+    //ha risposto se c'è almeno un radio disabilitato
+    const disabledRadio = [...radios].some((radio) =>
+      radio.hasAttribute('disabled')
+    );
+    if (disabledRadio) {
+      renderQuestion(questionNumber);
+    } else {
+      alert('RISPONDI ☄️');
     }
-    renderQuestion(questionNumber);
+
+    // renderQuestion(questionNumber);
   }
 
   function enableRadio() {
-    const radios = document.querySelectorAll('input[type="radio"]');
     radios.forEach((radio) => {
       radio.disabled = false;
       radio.checked = false;
