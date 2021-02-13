@@ -19,8 +19,10 @@ window.onload = function () {
   const nextQuestionBtn = document.getElementById('nextQuestionBtn');
   const multipleChoiceSection = document.querySelector('.multiple-choice');
   const booleanSection = document.querySelector('.boolean');
-
   const radios = document.querySelectorAll('input[type="radio"]');
+  const question_number = document.querySelector('.question-number');
+  const question_body = document.querySelector('.question-body');
+  const user_points = document.querySelector('.user-points');
 
   //listeners
   startBtn.addEventListener('click', getUserPreferences);
@@ -99,11 +101,6 @@ window.onload = function () {
     enableRadio();
     //estraggo dalla memoria la domanda che mi serve, in base all'indice
     const question = questionsMemory.find((_, idx) => idx === qNum);
-
-    //referenze alla domanda nel DOM
-    const question_number = document.querySelector('.question-number');
-    const question_body = document.querySelector('.question-body');
-    const user_points = document.querySelector('.user-points');
 
     //estraggo le parrti che mi servono
     const {
