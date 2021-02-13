@@ -24,11 +24,20 @@ window.onload = function () {
   const question_body = document.querySelector('.question-body');
   const user_points = document.querySelector('.user-points');
   const labelsUI = multipleChoiceSection.querySelectorAll('label');
+  const answerBoxes = document.querySelectorAll('.answer-box');
 
   //listeners
   startBtn.addEventListener('click', getUserPreferences);
   confirmBtn.addEventListener('click', getAnswer);
   nextQuestionBtn.addEventListener('click', showNextAnswer);
+  answerBoxes.forEach((box) => box.addEventListener('click', clickRadio));
+
+  function clickRadio(e) {
+    // ! DA CONTROLLARE, DA UNDEFINED
+    const radioChild = e.target.children[0];
+    console.log(radioChild);
+    radioChild.click();
+  }
 
   function getUserPreferences() {
     const quantity = parseInt(document.getElementById('quantity').value);

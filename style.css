@@ -145,3 +145,7 @@ input[type='radio'] {
 .quiz-controller > button:first-child {
   margin-right: 0.6rem;
 }
+
+.answer-box {
+  cursor: pointer;
+}
