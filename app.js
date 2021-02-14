@@ -33,7 +33,6 @@ window.onload = function () {
   answerBoxes.forEach((box) => box.addEventListener('click', clickRadio));
 
   function clickRadio(e) {
-    // ! DA CONTROLLARE, DA UNDEFINED
     let radio;
     if (e.target.classList.contains('label')) {
       radio = e.target.previousElementSibling;
@@ -41,6 +40,8 @@ window.onload = function () {
       radio = e.currentTarget.children[0];
     }
     radio.click();
+    answerBoxes.forEach((box) => box.classList.remove('clicked'));
+    radio.closest('.answer-box').classList.add('clicked');
 
     // console.log(radio);
     // radio.click();
@@ -141,6 +142,10 @@ window.onload = function () {
       //risp booleana
       switchUiCard(multipleChoiceSection, booleanSection);
     }
+    hasAnswered = false;
+    answerBoxes.forEach((box) =>
+      box.classList.remove('clicked', 'success', 'danger')
+    );
   }
 
   function getAnswer() {
@@ -166,7 +171,7 @@ window.onload = function () {
       disableRadioAfterSubmit();
 
       //incremento il contatore delle domande
-      updateQuestionNumber();
+      questionNumber++;
 
       //update punteggio UI dopo risposta
       document.querySelector('.user-points').innerText = `${
@@ -184,7 +189,8 @@ window.onload = function () {
       console.log('correct:', correctAnswer);
 
       //se la risposta è corretta aggiurno i punti
-      updatePoints();
+      pointsMemory += POINT_VALUE;
+
       alert('congrats!');
     } else {
       console.log('user ans:', userAnswer);
@@ -192,15 +198,6 @@ window.onload = function () {
 
       alert(`wrong! the correct answer was: ${correctAnswer}`);
     }
-  }
-
-  function updateQuestionNumber() {
-    questionNumber++;
-    console.log('questionNumber updated: new qNum:', questionNumber);
-  }
-
-  function updatePoints() {
-    pointsMemory += POINT_VALUE;
   }
 
   function disableRadioAfterSubmit() {
@@ -218,8 +215,9 @@ window.onload = function () {
       showFinalResult();
       return;
     }
+    renderQuestion(questionNumber);
 
-    //ha risposto se c'è almeno un radio disabilitato
+    /*  //ha risposto se c'è almeno un radio disabilitato
     const disabledRadio = [...radios].some((radio) =>
       radio.hasAttribute('disabled')
     );
@@ -227,9 +225,7 @@ window.onload = function () {
       renderQuestion(questionNumber);
     } else {
       alert('RISPONDI ☄️');
-    }
-
-    // renderQuestion(questionNumber);
+    } */
   }
 
   function enableRadio() {
@@ -239,6 +235,7 @@ window.onload = function () {
     });
     confirmBtn.disabled = false;
   }
+
   function showFinalResult() {
     console.log('finito, ora facciamo altro');
     const container = document.querySelector('.container');

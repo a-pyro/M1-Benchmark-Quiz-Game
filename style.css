@@ -158,3 +158,15 @@ label {
 .answer-box:hover {
   background-color: #607d8b;
 }
+
+.clicked {
+  background-color: #607d8b;
+}
+
+.success {
+  background-color: #37ff148c;
+}
+
+.danger {
+  background-color: #fd153094;
+}
