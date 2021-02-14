@@ -25,6 +25,7 @@ window.onload = function () {
   const user_points = document.querySelector('.user-points');
   const labelsUI = multipleChoiceSection.querySelectorAll('label');
   const answerBoxes = document.querySelectorAll('.answer-box');
+  const allLabelsAnswers = document.querySelectorAll('#userCard label');
 
   //listeners
   startBtn.addEventListener('click', getUserPreferences);
@@ -40,6 +41,8 @@ window.onload = function () {
       radio = e.currentTarget.children[0];
     }
     radio.click();
+
+    //cambio sfondo sulla box cliccata
     answerBoxes.forEach((box) => box.classList.remove('clicked'));
     radio.closest('.answer-box').classList.add('clicked');
 
@@ -109,6 +112,7 @@ window.onload = function () {
   }
 
   function renderQuestion(qNum) {
+    answerBoxes.forEach((box) => box.classList.remove('success', 'danger'));
     //prima devo levare il disabled sui radio
     enableRadio();
     //estraggo dalla memoria la domanda che mi serve, in base all'indice
@@ -150,8 +154,8 @@ window.onload = function () {
 
   function getAnswer() {
     //prender le risposte
-    const answers = document.querySelectorAll('.answer-controller input');
-    const radioChecked = [...answers].find((radioBtn) => radioBtn.checked);
+    // const radioInputs = document.querySelectorAll('.answer-controller input');
+    const radioChecked = [...radios].find((radioBtn) => radioBtn.checked);
     if (radioChecked) {
       const userAnswerText = document.querySelector(
         `input[value="${radioChecked.value}"] + label`
@@ -161,7 +165,7 @@ window.onload = function () {
       userAnswers.push(userAnswerText);
 
       //controllo se ha risposto correttamente
-      checkAnswer(userAnswerText);
+      checkAnswer(radioChecked, userAnswerText);
 
       //dico che ha risposto alla prima domanda
       // userHasAnswered(true);
@@ -182,21 +186,25 @@ window.onload = function () {
     }
   }
 
-  function checkAnswer(userAnswer) {
+  function checkAnswer(radioSelected, userAnswer) {
     const correctAnswer = correctAnswersMemory[questionNumber];
+    answerBoxes.forEach((box) => box.classList.remove('clicked'));
     if (userAnswer === correctAnswer) {
       console.log('user ans:', userAnswer);
       console.log('correct:', correctAnswer);
 
-      //se la risposta è corretta aggiurno i punti
+      //se la risposta è corretta aggiurno i punti e coloro casella
+      radioSelected.closest('.answer-box').classList.add('success');
       pointsMemory += POINT_VALUE;
-
-      alert('congrats!');
     } else {
+      //la risposta è sbagliata
+      radioSelected.closest('.answer-box').classList.add('danger');
+      const rightAnswer = [...allLabelsAnswers].find(
+        (label) => label.innerText === correctAnswer
+      );
+      rightAnswer.closest('.answer-box').classList.add('success');
       console.log('user ans:', userAnswer);
       console.log('correct:', correctAnswer);
-
-      alert(`wrong! the correct answer was: ${correctAnswer}`);
     }
   }
 
@@ -215,6 +223,7 @@ window.onload = function () {
       showFinalResult();
       return;
     }
+    if (!hasAnswered) return;
     renderQuestion(questionNumber);
 
     /*  //ha risposto se c'è almeno un radio disabilitato
