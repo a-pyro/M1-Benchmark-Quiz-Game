@@ -34,9 +34,18 @@ window.onload = function () {
 
   function clickRadio(e) {
     // ! DA CONTROLLARE, DA UNDEFINED
-    const radioChild = e.target.children[0];
-    console.log(radioChild);
-    radioChild.click();
+    let radio;
+    if (e.target.classList.contains('label')) {
+      radio = e.target.previousElementSibling;
+    } else {
+      radio = e.currentTarget.children[0];
+    }
+    radio.click();
+
+    // console.log(radio);
+    // radio.click();
+    // console.log(radioChild);
+    // radioChild.click();
   }
 
   function getUserPreferences() {

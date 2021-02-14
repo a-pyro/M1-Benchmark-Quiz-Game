@@ -124,6 +124,7 @@ button {
   color: #fff;
   cursor: pointer;
   border: 1px solid transparent;
+  transition: 0.1s;
 }
 
 button:hover {
@@ -148,6 +149,12 @@ input[type='radio'] {
   margin-right: 0.6rem;
 }
 
-.answer-box {
+.answer-box,
+label {
   cursor: pointer;
+  transition: 0.1s;
+}
+
+.answer-box:hover {
+  background-color: #607d8b;
 }
