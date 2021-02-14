@@ -54,6 +54,9 @@
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
           </select>
+          <label for="category" class="mb">Choose Category</label>
+
+          <select name="category" id="category" class="mb"></select>
           <button id="startBtn">Let's GO!</button>
         </div>
       </section>
@@ -63,15 +66,11 @@
         <section class="question">
           <div class="question-header">
             <h3 class="question-number"></h3>
-            <h4 id="userPoints">
-              Your points: <span class="user-points"></span>
+            <h4 class="hide" id="userPoints">
+              Points: <span class="user-points"></span>
             </h4>
           </div>
-          <p class="question-body">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore
-            aut molestiae alias quo ipsam placeat? Voluptates vitae quis modi
-            perspiciatis.
-          </p>
+          <p class="question-body"></p>
         </section>
         <!-- controller per la risposta -->
         <section class="answer-controller">

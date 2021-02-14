@@ -170,3 +170,8 @@ label {
 .danger {
   background-color: #fd153094;
 }
+
+.endgame {
+  color: #fff;
+  padding: 0.8rem;
+}

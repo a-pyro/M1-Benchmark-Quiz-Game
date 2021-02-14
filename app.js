@@ -2,6 +2,32 @@ console.log('Hi there! 🔥');
 
 window.onload = function () {
   //memory
+  const questionCategories = [
+    'General Knowledge',
+    'Entertainment: Books',
+    'Entertainment: Film',
+    'Entertainment: Music',
+    'Entertainment: Musicals & Theatres',
+    'Entertainment: Television',
+    'Entertainment: Video Games',
+    'Entertainment: Board Games',
+    'Science & Nature',
+    'Science: Computers',
+    'Science: Mathematics',
+    'Mythology',
+    'Sports',
+    'Geography',
+    'History',
+    'Politics',
+    'Art',
+    'Celebrities',
+    'Animals',
+    'Vehicles',
+    'Entertainment: Comics',
+    'Science: Gadgets',
+    'Entertainment: Japanese Anime & Manga',
+    'Entertainment: Cartoon & Animations',
+  ];
   const questionsMemory = [];
   const correctAnswersMemory = [];
   let questionNumber = 0;
@@ -26,13 +52,23 @@ window.onload = function () {
   const labelsUI = multipleChoiceSection.querySelectorAll('label');
   const answerBoxes = document.querySelectorAll('.answer-box');
   const allLabelsAnswers = document.querySelectorAll('#userCard label');
+  const category = document.getElementById('category');
 
   //listeners
   startBtn.addEventListener('click', getUserPreferences);
   confirmBtn.addEventListener('click', getAnswer);
   nextQuestionBtn.addEventListener('click', showNextAnswer);
   answerBoxes.forEach((box) => box.addEventListener('click', clickRadio));
+  document.querySelector('.container').addEventListener('click', playAgain);
 
+  //popolo le categorie
+  category.innerHTML = questionCategories
+    .map(
+      (category, idx) => `
+  <option value="${idx + 9}">${category}</option>
+  `
+    )
+    .join('');
   function clickRadio(e) {
     let radio;
     if (e.target.classList.contains('label')) {
@@ -53,10 +89,14 @@ window.onload = function () {
   }
 
   function getUserPreferences() {
+    const category = document.querySelector('#category').value;
+    console.log(category.value);
     const quantity = parseInt(document.getElementById('quantity').value);
     const difficulty = document.getElementById('difficulty').value;
+    console.log(category);
     if (isNaN(quantity)) {
-      alert('please select a number');
+      document.getElementById('quantity').focus();
+      document.getElementById('quantity').classList.add('danger-border');
       return; //! mettere qualcosa tipo focus sull'input
     }
 
@@ -64,7 +104,7 @@ window.onload = function () {
       alert(`Select a value between 1 and ${MAX_QUESTIONS} you nerd 🤓`);
       return;
     }
-    getQuestions(quantity, difficulty)
+    getQuestions(quantity, difficulty, category)
       .then((data) => {
         const { results: questions } = data;
         pushQuestions(questions, questionsMemory);
@@ -82,13 +122,12 @@ window.onload = function () {
         console.table(questionsMemory);
       });
 
-    // console.log(questionsMemory);
-    // console.log(quantity, difficulty);
+    user_points.parentElement.classList.remove('hide');
   }
 
   //fetch function
-  async function getQuestions(quantity, difficulty) {
-    const endpoint = `https://opentdb.com/api.php?amount=${quantity}&category=18&difficulty=${difficulty}`;
+  async function getQuestions(quantity, difficulty, category) {
+    const endpoint = `https://opentdb.com/api.php?amount=${quantity}&category=${category}&difficulty=${difficulty}`;
     const response = await fetch(endpoint);
     const data = await response.json();
     return data;
@@ -131,9 +170,9 @@ window.onload = function () {
     ); //!si puo' implementare un random migliore ma per ora bene così
 
     //setto il render dellele parti comuni
-    question_number.innerText = `Question number ${qNum + 1}`;
+    question_number.innerText = `Question ${qNum + 1} / ${totalQuestionNumber}`;
     question_body.innerText = questionText;
-    user_points.innerText = `${pointsMemory || ''}`;
+    user_points.innerText = `Points: ${pointsMemory || ''}`;
 
     //setto il render delle parti specifiche in base alla tipologia di domanda
     if (question.type === 'multiple') {
@@ -182,7 +221,7 @@ window.onload = function () {
         pointsMemory || ''
       }`;
     } else {
-      alert('provide an answer!');
+      return;
     }
   }
 
@@ -225,16 +264,6 @@ window.onload = function () {
     }
     if (!hasAnswered) return;
     renderQuestion(questionNumber);
-
-    /*  //ha risposto se c'è almeno un radio disabilitato
-    const disabledRadio = [...radios].some((radio) =>
-      radio.hasAttribute('disabled')
-    );
-    if (disabledRadio) {
-      renderQuestion(questionNumber);
-    } else {
-      alert('RISPONDI ☄️');
-    } */
   }
 
   function enableRadio() {
@@ -249,7 +278,16 @@ window.onload = function () {
     console.log('finito, ora facciamo altro');
     const container = document.querySelector('.container');
     container.innerHTML = `
-    <h2>Game OVER!</h2><h3>Your total points: ${pointsMemory}</h3>`;
+    <div class="endgame">
+      <h2>
+        Game OVER!</h2><h3>Your total points: ${pointsMemory}
+      </h3>
+      <button id="playAgain">Play Again</button>
+    </div>`;
+  }
+
+  function playAgain(e) {
+    if (e.target.id === 'playAgain') window.location.reload();
   }
 };
 
